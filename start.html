@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css">
+    <!-- 最新编译并压缩的 CSS -->
+    <link href="https://www.w3school.com.cn/lib/bs/bootstrap.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="./todo.css"> -->
+    <!-- 最新编译的 JavaScript -->
+    <script src="https://www.w3school.com.cn/lib/bs/bootstrap.js"></script>
+    <style>
+        body {
+            background-color: rgb(245, 245, 245);
+            height: 100%;
+            width: 100%;
+        }
+
+        .start-body {
+            height: 100%;
+            width: 100%;
+            padding: 0 50px;
+        }
+
+        .home-icon {
+            margin-bottom: 5px;
+            margin-right: 5px;
+        }
+
+        .start-slogan {
+            color: #FFF;
+            margin-left: 420px;
+        }
+
+        .start-sum {
+            padding: 10px;
+        }
+
+        .start-content {
+            position: absolute;
+            margin-top: 58px;
+            height: 673px;
+            width: 300px;
+            border-radius: 20px;
+            background-color: #FFF;
+            z-index: 5;
+        }
+
+        .start-todos {
+            float: right;
+            width: 900px;
+            background-color: #FFF;
+            margin-top: 58px;
+            padding: 35px;
+            z-index: 1;
+        }
+
+        .todo-footer {
+            height: 40px;
+            line-height: 40px;
+            padding-left: 6px;
+            margin-top: 5px;
+        }
+
+        .todo-footer button {
+            float: right;
+            margin-top: 5px;
+        }
+
+        .todo-header input {
+            width: 560px;
+            height: 38px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 4px 7px;
+        }
+
+        .todo-header input:focus {
+            outline: none;
+            border-color: rgba(82, 168, 236, 0.8);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        }
+
+        .todo-main {
+            margin-left: 0px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            padding-left: 5px;
+            margin-top: 20px;
+        }
+
+
+        .btn-todo {
+            display: inline-block;
+            padding: 4px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            box-shadow: inset 0 1px 0 rgb(255, 255, 255, 0.2), 0 1px 2px rgb(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        .btn-danger {
+            color: #ffffff;
+            background-color: #da4f49;
+            border: 1px solid #bd362f;
+        }
+
+        .btn-danger:hover {
+            color: #ffffff;
+            background-color: #bd362f;
+        }
+
+        .btn-todo:focus {
+            outline: none;
+        }
+
+        .todo-container {
+            width: 600px;
+            margin: 0 auto;
+        }
+
+        .todo-container .todo-wrap {
+            padding: 20px;
+            border: 3px solid #000;
+            border-radius: 10px;
+            background-color: #FFF;
+        }
+
+        .start-box {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top">
+        <div class="container" style="position: relative;">
+            <a href="#" class="navbar-brand"><i><img class="home-icon" src="edit.png"></i> TodoList</a>
+            <h5 class="mb-0 start-slogan">无念方能静,静中气自平</h5>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item me-3 ">
+                    <div class="nav-link">用户：123</div>
+                </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+    <div class="container start-body">
+        <div class="start-content position-fixed">
+            <div class="start-items" style="width: 100%;">
+                <div class="start-timer" style=" margin-top: 10px;width: 300px; height: 150px;">
+                    时钟
+                    <!--钟表-->
+                </div>
+                <div class="start-sum">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-secondary">List小助手</a>
+                        <a href="#"
+                            class="list-group-item list-group-item-warning d-flex justify-content-between align-items-center">未完成事务<span
+                                class="badge bg-warning rounded-pill">99</span></a>
+                        <a href="#"
+                            class="list-group-item list-group-item-success d-flex justify-content-between align-items-center">已完成事务<span
+                                class="badge bg-success rounded-pill">99</span></a>
+                        <a href="#"
+                            class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">事务总数<span
+                                class="badge bg-primary rounded-pill">99</span></a>
+                        <a href="#"
+                            class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">已到达截止时间<span
+                                class="badge bg-danger rounded-pill">99</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="start-todos">
+            <div class="todo-container">
+                <div class="todo-wrap">
+                    <div class="todo-header">
+                        <!-- 输入栏 -->
+                        <form class="d-flex">
+                            <input class="todo-input form-control me-2" type="text" placeholder="在此输入需要添加的事务">
+                            <button class="btn btn-primary" type="button">Add</button>
+                        </form>
+                    </div>
+
+                    <!-- 事务列表 -->
+                    <div id="accordion" class="mt-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <input type="checkbox" class="form-check-input start-box" />
+                                <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+                                    可折叠组项目 #1
+                                </a>
+                                <button class="btn-todo btn-danger">删除</button>
+                            </div>
+                            <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
+                                <div class="card-body">
+                                    <label for="comment" class="mt-1"> 备注(仅限一行)</label>
+                                    <button type="submit" class="btn btn-primary float-end mb-3">提交</button>
+                                    <textarea class="form-control" rows="1" id="comment" name="text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <input type="checkbox" class="form-check-input start-box" />
+                                <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
+                                    可折叠组项目 #2
+                                </a>
+                                <button class="btn-todo btn-danger">删除</button>
+                            </div>
+                            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                                <div class="card-body">
+                                    <label for="comment" class="mt-1"> 备注(仅限一行)</label>
+                                    <button type="submit" class="btn btn-primary float-end mb-3">提交</button>
+                                    <textarea class="form-control" rows="1" id="comment" name="text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <input type="checkbox" class="form-check-input start-box" />
+                                <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
+                                    可折叠组项目 #3
+                                </a>
+                                <button class="btn-todo btn-danger">删除</button>
+                            </div>
+                            <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                                <div class="card-body">
+                                    <label for="comment" class="mt-1"> 备注(仅限一行)</label>
+                                    <button type="submit" class="btn btn-primary float-end mb-3">提交</button>
+                                    <textarea class="form-control" rows="1" id="comment" name="text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="todo-footer mt-3">
+                        <span class="text-warning" style="font-size: 15px;">点击事务来添加备注!</span>
+                        <button class="btn-todo btn-danger">清除已完成任务</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
