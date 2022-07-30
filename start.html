@@ -19,45 +19,6 @@
             width: 100%;
         }
 
-        .start-body {
-            height: 100%;
-            width: 100%;
-            padding: 0 50px;
-        }
-
-        .home-icon {
-            margin-bottom: 5px;
-            margin-right: 5px;
-        }
-
-        .start-slogan {
-            color: #FFF;
-            margin-left: 420px;
-        }
-
-        .start-sum {
-            padding: 10px;
-        }
-
-        .start-content {
-            position: absolute;
-            margin-top: 58px;
-            height: 673px;
-            width: 300px;
-            border-radius: 20px;
-            background-color: #FFF;
-            z-index: 5;
-        }
-
-        .start-todos {
-            float: right;
-            width: 900px;
-            background-color: #FFF;
-            margin-top: 58px;
-            padding: 35px;
-            z-index: 1;
-        }
-
         .todo-footer {
             height: 40px;
             line-height: 40px;
@@ -137,6 +98,53 @@
         .start-box {
             margin-top: 10px;
         }
+
+        .start-body {
+            height: 100%;
+            width: 100%;
+            padding: 0 50px;
+        }
+
+        .home-icon {
+            margin-bottom: 5px;
+            margin-right: 5px;
+        }
+
+        .start-slogan {
+            color: #FFF;
+            margin-left: 420px;
+        }
+
+        .start-sum {
+            padding: 10px;
+        }
+
+        .start-content {
+            position: absolute;
+            margin-top: 58px;
+            height: 400px;
+            width: 300px;
+            border-radius: 20px;
+            background-color: #FFF;
+            border: 3px solid #000;
+            z-index: 5;
+        }
+
+        .start-todos {
+            float: right;
+            width: 900px;
+            background-color: #FFF;
+            margin-top: 58px;
+            padding: 35px;
+            z-index: 1;
+        }
+
+        .start-timer{
+            margin-top: 10px;
+            width: 294px; 
+            height: 150px;
+            padding: 20px;
+        }
     </style>
 </head>
 
@@ -156,8 +164,9 @@
     <div class="container start-body">
         <div class="start-content position-fixed">
             <div class="start-items" style="width: 100%;">
-                <div class="start-timer" style=" margin-top: 10px;width: 300px; height: 150px;">
-                    时钟
+                <div class="start-timer">
+                    <h4>北京时间</h4><br>
+                    <h2>2022.7.30 18:00</h2>
                     <!--钟表-->
                 </div>
                 <div class="start-sum">
@@ -199,7 +208,34 @@
                                 <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
                                     可折叠组项目 #1
                                 </a>
-                                <button class="btn-todo btn-danger">删除</button>
+                                <select class="form-select d-sm-inline" style="width: 120px;">
+                                    <option>截止时间</option>
+                                    <option>0:00</option>
+                                    <option>1:00</option>
+                                    <option>2:00</option>
+                                    <option>3:00</option>
+                                    <option>4:00</option>
+                                    <option>5:00</option>
+                                    <option>6:00</option>
+                                    <option>7:00</option>
+                                    <option>8:00</option>
+                                    <option>9:00</option>
+                                    <option>10:00</option>
+                                    <option>11:00</option>
+                                    <option>12:00</option>
+                                    <option>13:00</option>
+                                    <option>14:00</option>
+                                    <option>15:00</option>
+                                    <option>16:00</option>
+                                    <option>17:00</option>
+                                    <option>18:00</option>
+                                    <option>19:00</option>
+                                    <option>20:00</option>
+                                    <option>21:00</option>
+                                    <option>22:00</option>
+                                    <option>23:00</option>
+                                  </select>
+                                <button class="btn-todo btn-danger float-end mt-1">删除</button>
                             </div>
                             <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
                                 <div class="card-body">
@@ -216,7 +252,34 @@
                                 <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
                                     可折叠组项目 #2
                                 </a>
-                                <button class="btn-todo btn-danger">删除</button>
+                                <select class="form-select d-sm-inline" style="width: 120px;">
+                                    <option>截止时间</option>
+                                    <option>0:00</option>
+                                    <option>1:00</option>
+                                    <option>2:00</option>
+                                    <option>3:00</option>
+                                    <option>4:00</option>
+                                    <option>5:00</option>
+                                    <option>6:00</option>
+                                    <option>7:00</option>
+                                    <option>8:00</option>
+                                    <option>9:00</option>
+                                    <option>10:00</option>
+                                    <option>11:00</option>
+                                    <option>12:00</option>
+                                    <option>13:00</option>
+                                    <option>14:00</option>
+                                    <option>15:00</option>
+                                    <option>16:00</option>
+                                    <option>17:00</option>
+                                    <option>18:00</option>
+                                    <option>19:00</option>
+                                    <option>20:00</option>
+                                    <option>21:00</option>
+                                    <option>22:00</option>
+                                    <option>23:00</option>
+                                  </select>
+                                <button class="btn-todo btn-danger float-end mt-1">删除</button>
                             </div>
                             <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
                                 <div class="card-body">
@@ -233,7 +296,34 @@
                                 <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
                                     可折叠组项目 #3
                                 </a>
-                                <button class="btn-todo btn-danger">删除</button>
+                                <select class="form-select d-sm-inline" style="width: 120px;">
+                                    <option>截止时间</option>
+                                    <option>0:00</option>
+                                    <option>1:00</option>
+                                    <option>2:00</option>
+                                    <option>3:00</option>
+                                    <option>4:00</option>
+                                    <option>5:00</option>
+                                    <option>6:00</option>
+                                    <option>7:00</option>
+                                    <option>8:00</option>
+                                    <option>9:00</option>
+                                    <option>10:00</option>
+                                    <option>11:00</option>
+                                    <option>12:00</option>
+                                    <option>13:00</option>
+                                    <option>14:00</option>
+                                    <option>15:00</option>
+                                    <option>16:00</option>
+                                    <option>17:00</option>
+                                    <option>18:00</option>
+                                    <option>19:00</option>
+                                    <option>20:00</option>
+                                    <option>21:00</option>
+                                    <option>22:00</option>
+                                    <option>23:00</option>
+                                  </select>
+                                <button class="btn-todo btn-danger float-end mt-1">删除</button>
                             </div>
                             <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
                                 <div class="card-body">
