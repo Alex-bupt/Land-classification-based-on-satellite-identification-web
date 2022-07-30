@@ -12,11 +12,12 @@
     <script src="https://www.w3school.com.cn/lib/bs/bootstrap.js"></script>
     <style>
         .home {
-            height: 675px;
-            width: 100%;
+            height: 673px;
+            width: 1536px;
             background-image: url("home.jpg");
             background-repeat: no-repeat;
             background-position: center;
+            margin: auto 0;
             position: relative;
         }
 
@@ -139,18 +140,19 @@
             </div>
         </div>
     </nav>
-    <div class="home">
-        <div class="start-div">
-            <h3 class="home-start">你的下一款TodoList 又何必只是TodoList</h3>
+
+        <div class="home">
+            <div class="start-div">
+                <h3 class="home-start">你的下一款TodoList 又何必只是TodoList</h3>
+            </div>
+            <button type="button" class="home-btn2 btn btn-outline-warning" data-bs-toggle="modal"
+                data-bs-target="#mylogin">
+                还没有账号？点击注册
+            </button><br>
+            <button type="button" class="home-btn btn btn-success " data-bs-toggle="modal" data-bs-target="#myRegister">
+                立 即 登 录
+            </button>
         </div>
-        <button type="button" class="home-btn2 btn btn-outline-warning" data-bs-toggle="modal"
-            data-bs-target="#mylogin">
-            还没有账号？点击注册
-        </button><br>
-        <button type="button" class="home-btn btn btn-success " data-bs-toggle="modal" data-bs-target="#myRegister">
-            立 即 登 录
-        </button>
-    </div>
 
     <!-- 注册界面 -->
     <div id="mylogin" class="login modal fade" style="width:600px;height:650px;background-color:#FFFFFF;">
