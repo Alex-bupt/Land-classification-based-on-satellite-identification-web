@@ -1,15 +1,33 @@
 <template>
   <div>
-    <div class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top" style="display: block;">
-      <div class="container" style="position: relative;">
-        <a href="#" class="navbar-brand" @click="toList"><i><img class="home-icon" src="../../assets/edit.png"></i>
-          TodoList</a>
-        <a href="#" class="navbar-brand" @click="toBlog"><i><img class="home-icon" src="../../assets/blog.png"></i> BLOG</a>
+    <div
+      class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top"
+      style="display: block"
+    >
+      <div class="container" style="position: relative">
+        <a href="#" class="navbar-brand" @click="toList"
+          ><i><img class="home-icon" src="../../assets/edit.png" /></i>
+          TodoList</a
+        >
+        <a href="#" class="navbar-brand" @click="toBlog"
+          ><i><img class="home-icon" src="../../assets/blog.png" /></i> BLOG</a
+        >
         <h5 class="mb-0 start-slogan">无念方能静,静中气自平</h5>
         <div class="navbar-nav ms-auto">
           <form class="d-flex">
-            <input class="form-control me-2" type="text" placeholder="Username">
-            <button class="btn btn-warning" type="button">Search</button>
+            <input
+              class="form-control me-2"
+              type="text"
+              placeholder="Username"
+              v-model="currentsearchinguser"
+            />
+            <button
+              class="btn btn-warning"
+              type="button"
+              @click="SearchForUser"
+            >
+              Search
+            </button>
           </form>
         </div>
       </div>
@@ -19,45 +37,117 @@
         <div class="myself-name">你好，{{ username }}</div>
         <div class="myself-data">
           <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-secondary"
-               style="background-color: #f0eff4;">个人数据</a>
-            <a href="#"
-               class="list-group-item list-group-item-warning d-flex justify-content-between align-items-center"
-               style="background-color: #ebc999;">粉丝<span
-                class="badge bg-warning rounded-pill">199</span></a>
-            <a href="#"
-               class="list-group-item d-flex justify-content-between align-items-center"
-               style="background-color: #8ca9d3;">关注<span
-                class="badge bg-primary rounded-pill">299</span></a>
-            <a href="#"
-               class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center"
-               style="background-color: #f26659;">BLOG<span
-                class="badge rounded-pill" style="background-color: #ba2c3a;">939</span></a>
+            <a
+              href="#"
+              class="list-group-item list-group-item-secondary"
+              style="background-color: #f0eff4"
+              >个人数据</a
+            >
+            <a
+              href="#"
+              class="
+                list-group-item list-group-item-warning
+                d-flex
+                justify-content-between
+                align-items-center
+              "
+              style="background-color: #ebc999"
+              >粉丝<span class="badge bg-warning rounded-pill">{{
+                fans
+              }}</span></a
+            >
+            <a
+              href="#"
+              class="
+                list-group-item
+                d-flex
+                justify-content-between
+                align-items-center
+              "
+              style="background-color: #8ca9d3"
+              >关注<span class="badge bg-primary rounded-pill">{{
+                follow
+              }}</span></a
+            >
+            <a
+              href="#"
+              class="
+                list-group-item list-group-item-danger
+                d-flex
+                justify-content-between
+                align-items-center
+              "
+              style="background-color: #f26659"
+              >BLOG<span
+                class="badge rounded-pill"
+                style="background-color: #ba2c3a"
+                >{{ count }}</span
+              ></a
+            >
           </div>
         </div>
       </div>
       <div class="start-content">
-        <div class="start-items" style="width: 100%;">
+        <div class="start-items" style="width: 100%">
           <div class="start-timer">
-            <h4>北京时间</h4><br>
-            <h4>{{newTime}}</h4>
+            <h4>北京时间</h4>
+            <br />
+            <h4>{{ newTime }}</h4>
             <!--钟表-->
           </div>
           <div class="start-sum">
             <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-secondary">List小助手</a>
-              <a href="#"
-                 class="list-group-item list-group-item-warning d-flex justify-content-between align-items-center">未完成事务<span
-                  class="badge bg-warning rounded-pill">{{unfinished}}</span></a>
-              <a href="#"
-                 class="list-group-item list-group-item-success d-flex justify-content-between align-items-center">已完成事务<span
-                  class="badge bg-success rounded-pill">{{finished}}</span></a>
-              <a href="#"
-                 class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">事务总数<span
-                  class="badge bg-primary rounded-pill">{{all}}</span></a>
-              <a href="#"
-                 class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">已到达截止时间<span
-                  class="badge bg-danger rounded-pill">{{isExpire}}</span></a>
+              <a href="#" class="list-group-item list-group-item-secondary"
+                >List小助手</a
+              >
+              <a
+                href="#"
+                class="
+                  list-group-item list-group-item-warning
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                "
+                >未完成事务<span class="badge bg-warning rounded-pill">{{
+                  unfinished
+                }}</span></a
+              >
+              <a
+                href="#"
+                class="
+                  list-group-item list-group-item-success
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                "
+                >已完成事务<span class="badge bg-success rounded-pill">{{
+                  finished
+                }}</span></a
+              >
+              <a
+                href="#"
+                class="
+                  list-group-item list-group-item-primary
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                "
+                >事务总数<span class="badge bg-primary rounded-pill">{{
+                  all
+                }}</span></a
+              >
+              <a
+                href="#"
+                class="
+                  list-group-item list-group-item-danger
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                "
+                >已到达截止时间<span class="badge bg-danger rounded-pill">{{
+                  isExpire
+                }}</span></a
+              >
             </div>
           </div>
         </div>
@@ -65,22 +155,20 @@
       <router-view></router-view>
     </div>
   </div>
-
 </template>
 
 <script>
-
 import axios from "axios";
-const days = ['天', '一', '二', '三', '四', '五', '六']; // 星期数组
-const icnow = new Date();      // 初始化时间
-let interval;                // 定义全局定时器，用于清除定时器
+const days = ["天", "一", "二", "三", "四", "五", "六"]; // 星期数组
+const icnow = new Date(); // 初始化时间
+let interval; // 定义全局定时器，用于清除定时器
 
- export default{
+export default {
   name: "Start",
   data() {
     return {
-      username: '',
-      userid: '',
+      username: "",
+      userid: "",
       unfinished: 0,
       finished: 0,
       all: 0,
@@ -89,8 +177,14 @@ let interval;                // 定义全局定时器，用于清除定时器
       month: icnow.getMonth() + 1,
       date: icnow.getDate(),
       day: days[icnow.getDay() - 1],
-      time: icnow.toTimeString().substring(0, 8)
-    }
+      time: icnow.toTimeString().substring(0, 8),
+      fans: 1,
+      count: 2,
+      follow: 3,
+      currentsearchinguser: "",
+      isFind: false,
+      blogs: [],
+    };
   },
   beforeCreate() {
     if (location.href.indexOf("#reloaded") == -1) {
@@ -98,54 +192,109 @@ let interval;                // 定义全局定时器，用于清除定时器
       location.reload();
     }
   },
-   created () {
-     interval = setInterval(() =>{
-       let icnow = new Date();
-       this.year = icnow.getFullYear();
-       this.month = icnow.getMonth() + 1;
-       this.date = icnow.getDate();
-       this.day = days[icnow.getDay()];
-       this.time = icnow.toTimeString().substring(0, 8);
-     }, 1000)
-   },
+  created() {
+    interval = setInterval(() => {
+      let icnow = new Date();
+      this.year = icnow.getFullYear();
+      this.month = icnow.getMonth() + 1;
+      this.date = icnow.getDate();
+      this.day = days[icnow.getDay()];
+      this.time = icnow.toTimeString().substring(0, 8);
+    }, 1000);
+  },
   mounted() {
-    this.username = this.$route.query.username
-    this.userid = this.$route.query.userid
+    this.username = this.$route.query.username;
+    this.userid = this.$route.query.userid;
     axios({
-      url: 'http://localhost:8080/task/get',
-      method: 'post',
+      url: "https://mock.presstime.cn/mock/62ef847099bc590021df133c/blog/get",
+      method: "post",
       params: {
-        userid: this.userid
-      }
-    }).then(res => {
-      this.unfinished = res.data.unfinished
-      this.finished = res.data.finished
-      this.all = res.data.all
-      this.isExpire = res.data.isExpire
-    })
+        userid: this.userid,
+      },
+    }).then((res) => {
+      this.fans = res.data.data.fans;
+      this.count = res.data.data.count;
+      this.follow = res.data.data.follow;
+    });
+    axios({
+      url: "http://localhost:8080/task/get",
+      method: "post",
+      params: {
+        userid: this.userid,
+      },
+    }).then((res) => {
+      this.unfinished = res.data.unfinished;
+      this.finished = res.data.finished;
+      this.all = res.data.all;
+      this.isExpire = res.data.isExpire;
+    });
   },
   methods: {
     toBlog() {
-      this.$router.push("/start/blog", () => {
-      }, () => {
-      })
+      this.$router.push(
+        "/start/blog",
+        () => {},
+        () => {}
+      );
     },
     toList() {
-      this.$router.push({path:"/start/todolist",query:{userid:this.userid}}, () => {
-      }, () => {
-      })
-    }
+      this.$router.push(
+        { path: "/start/todolist", query: { userid: this.userid } },
+        () => {},
+        () => {}
+      );
+    },
+    SearchForUser() {
+      axios({
+        url: "https://mock.presstime.cn/mock/62ef847099bc590021df133c/blog/users",
+        method: "post",
+        params: {
+          username: this.currentsearchinguser,
+        },
+      }).then((res) => {
+        this.isFind = res.data.state;
+        this.currentsearchinguser = "";
+        if (this.isFind) {
+          alert("成功关注用户" + this.currentsearchinguser + "！");
+          axios({
+            url: "https://mock.presstime.cn/mock/62ef847099bc590021df133c/blog/get",
+            method: "post",
+            params: {
+              userid: this.userid,
+            },
+          }).then((res) => {
+            this.fans = res.data.data.fans;
+            this.count = res.data.data.count;
+            this.follow = res.data.data.follow;
+          });
+          this.reload();
+        } else {
+          alert("用户" + this.currentsearchinguser + "不存在，关注失败！");
+        }
+      });
+    },
   },
-   computed: {
-     // 当前时间
-     newTime() {
-       return this.year + '年' + this.month + '月' + this.date + '日 星期' + this.day + ' ' + this.time;
-     }
-   },
-   beforeDestroy () {
-     clearInterval(interval);
-   }
-}
+  computed: {
+    // 当前时间
+    newTime() {
+      return (
+        this.year +
+        "年" +
+        this.month +
+        "月" +
+        this.date +
+        "日 星期" +
+        this.day +
+        " " +
+        this.time
+      );
+    },
+  },
+  beforeDestroy() {
+    clearInterval(interval);
+  },
+  inject: ["reload"],
+};
 </script>
 
 <style scoped>
@@ -157,12 +306,12 @@ body {
 
 .myself-box {
   position: fixed;
-  float: left;
+  /* float: left; */
   top: 70px;
   height: 250px;
   width: 300px;
   border-radius: 5px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid rgb(211, 205, 205);
   z-index: 5;
 }
@@ -193,7 +342,7 @@ body {
 
 .start-slogan {
   position: absolute;
-  color: #FFF;
+  color: #fff;
   left: 40%;
 }
 
@@ -208,7 +357,7 @@ body {
   height: 400px;
   width: 300px;
   border-radius: 5px;
-  background-color: #FFF;
+  background-color: #fff;
   border: 1px solid rgb(211, 205, 205);
   z-index: 5;
 }

@@ -94,6 +94,7 @@ export default {
   },
   mounted() {
     this.userid = this.$route.query.userid
+    this.username = this.$route.query.username
     axios({
       url: 'http://localhost:8080/task/get',
       method: 'post',
