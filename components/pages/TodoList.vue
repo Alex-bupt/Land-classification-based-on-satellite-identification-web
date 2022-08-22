@@ -15,7 +15,7 @@
           <div id="accordion" class="mt-3">
             <div class="card" v-for="task in tasks">
               <div class="card-header">
-                <input type="checkbox" class="form-check-input start-box" :checked="task.finish"/>
+                <input type="checkbox" class="form-check-input start-box" v-model="task.finish"/>
                 <a class="btn ms-2" data-bs-toggle="collapse" :href="['#task'+task.taskId]">
                   {{ task.taskName }}
                 </a>
@@ -48,7 +48,7 @@
                 </select>
                 <button class="btn-todo btn-danger float-end mt-1" @click="deleteItem(task.taskId)">删除</button>
               </div>
-              <div :id="['task'+task.id]" class="collapse" data-bs-parent="#accordion">
+              <div :id="['task'+task.taskId]" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
                   <label for="comment" class="mt-1"> 备注(仅限一行)</label>
                   <button type="submit" class="btn btn-primary float-end mb-3" @click="addInfo(task)">所有信息提交
@@ -61,7 +61,7 @@
           </div>
           <div class="todo-footer mt-3">
             <span class="text-warning" style="font-size: 15px;">点击事务来添加备注!</span>
-            <button class="btn-todo btn-danger" @click="deleteFinished(tasks)">清除已完成任务</button>
+            <button class="btn-todo btn-danger" @click="deleteFinished">清除已完成任务</button>
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       userid: '',
-      httpUrl:'',
+      httpUrl: '',
       tasks: []
     }
   },
@@ -124,29 +124,44 @@ export default {
         })
       }
     },
-    deleteFinished(tasks) {
-      let array;
-      tasks.forEach((task) => {
-        if (task.finish == true) {
+    deleteFinished() {
+      let array = []
+      let sum = 0
+      this.tasks.forEach((task) => {
+        if (task.finish) {
           array.push(task.taskId)
+          sum++
         }
       })
-      axios({
-        url: this.httpUrl + '/task/deleteall',
-        method: 'post',
-        params: {
-          userid: this.userid,
-          taskid: array
-        }
-      }).then(res => {
-        this.tasks = res.data.data.tasks
-      })
+      for(let i = 0;i<sum;i++){
+        window.alert(i)
+        axios({
+          url: this.httpUrl + '/task/delete',
+          method: 'post',
+          params: {
+            userid: this.userid,
+            taskid: array[i]
+          }
+        }).then(res => {
+          this.tasks = res.data.data.tasks
+        })
+      }
+      // axios({
+      //   url: this.httpUrl + '/task/deleteall',
+      //   method: 'get',
+      //   params: {
+      //     userid: array
+      //   }
+      // }).then(res => {
+      //   this.tasks = res.data.data.tasks
+      // })
     },
     addInfo(task) {
       axios({
         url: this.httpUrl + '/task/update',
         method: 'post',
         params: {
+          userid: this.userid,
           taskid: task.taskId,
           description: task.description,
           deadline: task.deadline,

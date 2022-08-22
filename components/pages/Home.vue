@@ -148,7 +148,7 @@ export default {
       readyLogin: false,
       readyReg: false,
       email: '',
-      httpUrl:'http://p3i69s.natappfree.cc'
+      httpUrl:'http://43.138.87.21:8080',
     }
   },
   methods: {
