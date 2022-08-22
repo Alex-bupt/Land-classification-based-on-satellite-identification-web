@@ -13,10 +13,10 @@
 
           <!-- 事务列表 -->
           <div id="accordion" class="mt-3">
-            <div class="card" v-for="(task) in tasks" :key="tasks.id">
+            <div class="card" v-for="task in tasks">
               <div class="card-header">
-                <input type="checkbox" class="form-check-input start-box" :checked="task.finished"/>
-                <a class="btn ms-2" data-bs-toggle="collapse" :href="['#task'+task.id]">
+                <input type="checkbox" class="form-check-input start-box" :checked="task.finish"/>
+                <a class="btn ms-2" data-bs-toggle="collapse" :href="['#task'+task.taskId]">
                   {{ task.taskName }}
                 </a>
                 <select class="form-select d-sm-inline ms-2" v-model="task.deadline" style="width: 120px;">
@@ -46,7 +46,7 @@
                   <option value=22>22:00</option>
                   <option value=23>23:00</option>
                 </select>
-                <button class="btn-todo btn-danger float-end mt-1" @click="deleteItem(task.id)">删除</button>
+                <button class="btn-todo btn-danger float-end mt-1" @click="deleteItem(task.taskId)">删除</button>
               </div>
               <div :id="['task'+task.id]" class="collapse" data-bs-parent="#accordion">
                 <div class="card-body">
@@ -77,21 +77,15 @@ export default {
   data() {
     return {
       userid: '',
-      tasks: [{
-        id: 1,
-        taskName: "吃饭",
-        description: "早早吃饭",
-        deadline: "",
-        finished: false,
-        httpUrl:''
-      }]
+      httpUrl:'',
+      tasks: []
     }
   },
   mounted() {
     this.httpUrl = this.$route.query.httpUrl
     this.userid = this.$route.query.userid
     axios({
-      url: 'http://g2uy9t.natappfree.cc/task/get',
+      url: this.httpUrl + '/task/get',
       method: 'post',
       params: {
         userid: this.userid
@@ -126,15 +120,15 @@ export default {
           }
         }).then(res => {
           this.tasks = res.data.data.tasks
-          this.$ref.add.innerText = ''
+          this.$refs.add.value = ""
         })
       }
     },
     deleteFinished(tasks) {
-      let array
+      let array;
       tasks.forEach((task) => {
-        if (task.finished == true) {
-          array.push(task.id)
+        if (task.finish == true) {
+          array.push(task.taskId)
         }
       })
       axios({
@@ -153,10 +147,10 @@ export default {
         url: this.httpUrl + '/task/update',
         method: 'post',
         params: {
-          taskid: task.id,
+          taskid: task.taskId,
           description: task.description,
           deadline: task.deadline,
-          finish: task.finished
+          finish: task.finish
         }
       }).then(res => {
         this.tasks = res.data.data.tasks

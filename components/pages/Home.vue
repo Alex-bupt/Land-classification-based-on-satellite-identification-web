@@ -148,7 +148,7 @@ export default {
       readyLogin: false,
       readyReg: false,
       email: '',
-      httpUrl:'http://sfsgd6.natappfree.cc'
+      httpUrl:'http://p3i69s.natappfree.cc'
     }
   },
   methods: {
@@ -164,6 +164,7 @@ export default {
         this.readyLogin = res.data.state
         this.userid = res.data.data.userid
         if (this.readyLogin) {
+          sessionStorage.setItem("userName",this.usernameLogin)
           this.$router.push({path: "/start", query: {username: this.usernameLogin, userid: this.userid, httpUrl:this.httpUrl}}, () => {
           }, () => {
           })

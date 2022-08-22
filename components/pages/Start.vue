@@ -28,17 +28,13 @@
                 d-flex
                 justify-content-between
                 align-items-center
-              " style="background-color: #ebc999">粉丝<span class="badge bg-warning rounded-pill">{{
-                fans
-              }}</span></a>
+              " style="background-color: #ebc999">粉丝<span class="badge bg-warning rounded-pill">{{fans}}</span></a>
             <a href="#" class="
                 list-group-item
                 d-flex
                 justify-content-between
                 align-items-center
-              " style="background-color: #8ca9d3">关注<span class="badge bg-primary rounded-pill">{{
-                follow
-              }}</span></a>
+              " style="background-color: #8ca9d3">关注<span class="badge bg-primary rounded-pill">{{follow }}</span></a>
             <a href="#" class="
                 list-group-item list-group-item-danger
                 d-flex
@@ -59,39 +55,31 @@
           </div>
           <div class="start-sum">
             <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-secondary">List小助手</a>
+              <a href="#" class="list-group-item list-group-item-secondary">List小助手<button class="btn btn-primary ms-2" @click="update">update</button></a>
               <a href="#" class="
                   list-group-item list-group-item-warning
                   d-flex
                   justify-content-between
                   align-items-center
-                ">未完成事务<span class="badge bg-warning rounded-pill">{{
-                  unfinished
-                }}</span></a>
+                ">未完成事务<span class="badge bg-warning rounded-pill">{{unfinished }}</span></a>
               <a href="#" class="
                   list-group-item list-group-item-success
                   d-flex
                   justify-content-between
                   align-items-center
-                ">已完成事务<span class="badge bg-success rounded-pill">{{
-                  finished
-                }}</span></a>
+                ">已完成事务<span class="badge bg-success rounded-pill">{{finished }}</span></a>
               <a href="#" class="
                   list-group-item list-group-item-primary
                   d-flex
                   justify-content-between
                   align-items-center
-                ">事务总数<span class="badge bg-primary rounded-pill">{{
-                  all
-                }}</span></a>
+                ">事务总数<span class="badge bg-primary rounded-pill">{{all}}</span></a>
               <a href="#" class="
                   list-group-item list-group-item-danger
                   d-flex
                   justify-content-between
                   align-items-center
-                ">已到达截止时间<span class="badge bg-danger rounded-pill">{{
-                  isExpire
-                }}</span></a>
+                ">已到达截止时间<span class="badge bg-danger rounded-pill">{{isExpire }}</span></a>
             </div>
           </div>
         </div>
@@ -150,7 +138,7 @@ export default {
   },
   mounted() {
     this.httpUrl = this.$route.query.httpUrl;
-    this.username = this.$route.query.username;
+    this.username = sessionStorage.getItem("userName");
     this.userid = this.$route.query.userid;
     this.$router.push(
         {path: "/start/blog", query: {userid: this.userid,httpUrl:this.httpUrl}},
@@ -159,6 +147,19 @@ export default {
         () => {
         }
     );
+    axios({
+      url: this.httpUrl + "/task/get",
+      method: "post",
+      params: {
+        userid: this.userid,
+      },
+    }).then((res) => {
+      this.unfinished = res.data.data.unfinished;
+      this.finished = res.data.data.finished;
+      this.all = res.data.data.all;
+      this.isExpire = res.data.data.isExpire;
+    });
+
     axios({
       url: this.httpUrl + "/blog/get",
       method: "post",
@@ -169,18 +170,6 @@ export default {
       this.fans = res.data.data.fans;
       this.count = res.data.data.count;
       this.follow = res.data.data.follow;
-    });
-    axios({
-      url: this.httpUrl + "/task/get",
-      method: "post",
-      params: {
-        userid: this.userid,
-      },
-    }).then((res) => {
-      this.unfinished = res.data.unfinished;
-      this.finished = res.data.finished;
-      this.all = res.data.all;
-      this.isExpire = res.data.isExpire;
     });
   },
   methods: {
@@ -202,13 +191,27 @@ export default {
           }
       );
     },
+    update(){
+      axios({
+        url: this.httpUrl + "/task/get",
+        method: "post",
+        params: {
+          userid: this.userid,
+        },
+      }).then((res) => {
+        this.unfinished = res.data.data.unfinished;
+        this.finished = res.data.data.finished;
+        this.all = res.data.data.all;
+        this.isExpire = res.data.data.isExpire;
+      });
+    },
     SearchForUser() {
       axios({
         url: this.httpUrl + "/blog/users",
         method: "post",
         params: {
-          myuserid:this.userid,
-          searchingusername: this.currentsearchinguser,
+          userid:this.userid,
+          username: this.currentsearchinguser,
         },
       }).then((res) => {
         this.isFind = res.data.state;
@@ -228,7 +231,7 @@ export default {
           });
           this.reload();
         } else {
-          alert("用户" + this.currentsearchinguser + "不存在或已经关注，关注失败！");
+          alert("用户" + this.currentsearchinguser + "不存在或已经关注，操作失败！");
         }
       });
     },
