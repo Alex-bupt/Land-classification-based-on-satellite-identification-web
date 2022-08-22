@@ -31,6 +31,5 @@ export default new VueRouter({
                     path:"todolist" ,
                     component: TodoList
                 }]
-        }],
-    mode: "history"
+        }]
 })

@@ -17,7 +17,7 @@
               <div class="card-header">
                 <input type="checkbox" class="form-check-input start-box" :checked="task.finished"/>
                 <a class="btn ms-2" data-bs-toggle="collapse" :href="['#task'+task.id]">
-                  {{ task.task_name }}
+                  {{ task.taskName }}
                 </a>
                 <select class="form-select d-sm-inline ms-2" v-model="task.deadline" style="width: 120px;">
                   <option value="">截止时间</option>
@@ -79,57 +79,54 @@ export default {
       userid: '',
       tasks: [{
         id: 1,
-        task_name: "吃饭",
+        taskName: "吃饭",
         description: "早早吃饭",
         deadline: "",
-        finished: false
-      }, {
-        id: 2,
-        task_name: "喝水",
-        description: "我要喝水",
-        deadline: "",
-        finished: false
+        finished: false,
+        httpUrl:''
       }]
     }
   },
   mounted() {
+    this.httpUrl = this.$route.query.httpUrl
     this.userid = this.$route.query.userid
-    this.username = this.$route.query.username
     axios({
-      url: 'http://localhost:8080/task/get',
+      url: 'http://g2uy9t.natappfree.cc/task/get',
       method: 'post',
       params: {
         userid: this.userid
       }
     }).then(res => {
-      this.tasks = res.data.tasks
+      this.tasks = res.data.data.tasks
     })
   },
   methods: {
     deleteItem(num) {
       axios({
-        url: 'http://localhost:8080/task/delete',
+        url: this.httpUrl + '/task/delete',
         method: 'post',
         params: {
+          userid: this.userid,
           taskid: num
         }
       }).then(res => {
-        this.tasks = res.data.tasks
+        this.tasks = res.data.data.tasks
       })
     },
     addItem() {
       let msg = this.$refs.add.value
-      if (msg = '') {
+      if (msg === '') {
       } else {
         axios({
-          url: 'http://localhost:8080/task/add',
+          url: this.httpUrl + '/task/add',
           method: 'post',
           params: {
             userid: this.userid,
-            task_name: "msg"
+            task_name: msg
           }
         }).then(res => {
-          this.tasks = res.data.tasks
+          this.tasks = res.data.data.tasks
+          this.$ref.add.innerText = ''
         })
       }
     },
@@ -141,18 +138,19 @@ export default {
         }
       })
       axios({
-        url: 'http://localhost:8080/task/deleteall',
+        url: this.httpUrl + '/task/deleteall',
         method: 'post',
         params: {
+          userid: this.userid,
           taskid: array
         }
       }).then(res => {
-        this.tasks = res.data.tasks
+        this.tasks = res.data.data.tasks
       })
     },
     addInfo(task) {
       axios({
-        url: 'http://localhost:8080/task/update',
+        url: this.httpUrl + '/task/update',
         method: 'post',
         params: {
           taskid: task.id,
@@ -161,7 +159,7 @@ export default {
           finish: task.finished
         }
       }).then(res => {
-        this.tasks = res.data.tasks
+        this.tasks = res.data.data.tasks
       })
     }
   }

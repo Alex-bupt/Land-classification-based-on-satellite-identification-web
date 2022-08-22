@@ -1,31 +1,16 @@
 <template>
   <div>
-    <div
-      class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top"
-      style="display: block"
-    >
+    <div class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top" style="display: block">
       <div class="container" style="position: relative">
-        <a href="#" class="navbar-brand" @click="toList"
-          ><i><img class="home-icon" src="../../assets/edit.png" /></i>
-          TodoList</a
-        >
-        <a href="#" class="navbar-brand" @click="toBlog"
-          ><i><img class="home-icon" src="../../assets/blog.png" /></i> BLOG</a
-        >
+        <a href="#" class="navbar-brand" @click="toList"><i><img class="home-icon" src="../../assets/edit.png"/></i>
+          TodoList</a>
+        <a href="#" class="navbar-brand" @click="toBlog"><i><img class="home-icon" src="../../assets/blog.png"/></i>
+          BLOG</a>
         <h5 class="mb-0 start-slogan">无念方能静,静中气自平</h5>
         <div class="navbar-nav ms-auto">
           <form class="d-flex">
-            <input
-              class="form-control me-2"
-              type="text"
-              placeholder="Username"
-              v-model="currentsearchinguser"
-            />
-            <button
-              class="btn btn-warning"
-              type="button"
-              @click="SearchForUser"
-            >
+            <input class="form-control me-2" type="text" placeholder="Username" v-model="currentsearchinguser"/>
+            <button class="btn btn-warning" type="button" @click="SearchForUser">
               Search
             </button>
           </form>
@@ -37,53 +22,30 @@
         <div class="myself-name">你好，{{ username }}</div>
         <div class="myself-data">
           <div class="list-group">
-            <a
-              href="#"
-              class="list-group-item list-group-item-secondary"
-              style="background-color: #f0eff4"
-              >个人数据</a
-            >
-            <a
-              href="#"
-              class="
+            <a href="#" class="list-group-item list-group-item-secondary" style="background-color: #f0eff4">个人数据</a>
+            <a href="#" class="
                 list-group-item list-group-item-warning
                 d-flex
                 justify-content-between
                 align-items-center
-              "
-              style="background-color: #ebc999"
-              >粉丝<span class="badge bg-warning rounded-pill">{{
+              " style="background-color: #ebc999">粉丝<span class="badge bg-warning rounded-pill">{{
                 fans
-              }}</span></a
-            >
-            <a
-              href="#"
-              class="
+              }}</span></a>
+            <a href="#" class="
                 list-group-item
                 d-flex
                 justify-content-between
                 align-items-center
-              "
-              style="background-color: #8ca9d3"
-              >关注<span class="badge bg-primary rounded-pill">{{
+              " style="background-color: #8ca9d3">关注<span class="badge bg-primary rounded-pill">{{
                 follow
-              }}</span></a
-            >
-            <a
-              href="#"
-              class="
+              }}</span></a>
+            <a href="#" class="
                 list-group-item list-group-item-danger
                 d-flex
                 justify-content-between
                 align-items-center
-              "
-              style="background-color: #f26659"
-              >BLOG<span
-                class="badge rounded-pill"
-                style="background-color: #ba2c3a"
-                >{{ count }}</span
-              ></a
-            >
+              " style="background-color: #f26659">BLOG<span class="badge rounded-pill"
+                                                            style="background-color: #ba2c3a">{{ count }}</span></a>
           </div>
         </div>
       </div>
@@ -91,63 +53,45 @@
         <div class="start-items" style="width: 100%">
           <div class="start-timer">
             <h4>北京时间</h4>
-            <br />
+            <br/>
             <h4>{{ newTime }}</h4>
             <!--钟表-->
           </div>
           <div class="start-sum">
             <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-secondary"
-                >List小助手</a
-              >
-              <a
-                href="#"
-                class="
+              <a href="#" class="list-group-item list-group-item-secondary">List小助手</a>
+              <a href="#" class="
                   list-group-item list-group-item-warning
                   d-flex
                   justify-content-between
                   align-items-center
-                "
-                >未完成事务<span class="badge bg-warning rounded-pill">{{
+                ">未完成事务<span class="badge bg-warning rounded-pill">{{
                   unfinished
-                }}</span></a
-              >
-              <a
-                href="#"
-                class="
+                }}</span></a>
+              <a href="#" class="
                   list-group-item list-group-item-success
                   d-flex
                   justify-content-between
                   align-items-center
-                "
-                >已完成事务<span class="badge bg-success rounded-pill">{{
+                ">已完成事务<span class="badge bg-success rounded-pill">{{
                   finished
-                }}</span></a
-              >
-              <a
-                href="#"
-                class="
+                }}</span></a>
+              <a href="#" class="
                   list-group-item list-group-item-primary
                   d-flex
                   justify-content-between
                   align-items-center
-                "
-                >事务总数<span class="badge bg-primary rounded-pill">{{
+                ">事务总数<span class="badge bg-primary rounded-pill">{{
                   all
-                }}</span></a
-              >
-              <a
-                href="#"
-                class="
+                }}</span></a>
+              <a href="#" class="
                   list-group-item list-group-item-danger
                   d-flex
                   justify-content-between
                   align-items-center
-                "
-                >已到达截止时间<span class="badge bg-danger rounded-pill">{{
+                ">已到达截止时间<span class="badge bg-danger rounded-pill">{{
                   isExpire
-                }}</span></a
-              >
+                }}</span></a>
             </div>
           </div>
         </div>
@@ -159,6 +103,7 @@
 
 <script>
 import axios from "axios";
+
 const days = ["天", "一", "二", "三", "四", "五", "六"]; // 星期数组
 const icnow = new Date(); // 初始化时间
 let interval; // 定义全局定时器，用于清除定时器
@@ -184,6 +129,7 @@ export default {
       currentsearchinguser: "",
       isFind: false,
       blogs: [],
+      httpUrl:''
     };
   },
   beforeCreate() {
@@ -203,10 +149,18 @@ export default {
     }, 1000);
   },
   mounted() {
+    this.httpUrl = this.$route.query.httpUrl;
     this.username = this.$route.query.username;
     this.userid = this.$route.query.userid;
+    this.$router.push(
+        {path: "/start/blog", query: {userid: this.userid,httpUrl:this.httpUrl}},
+        () => {
+        },
+        () => {
+        }
+    );
     axios({
-      url: "https://mock.presstime.cn/mock/62ef847099bc590021df133c/blog/get",
+      url: this.httpUrl + "/blog/get",
       method: "post",
       params: {
         userid: this.userid,
@@ -217,7 +171,7 @@ export default {
       this.follow = res.data.data.follow;
     });
     axios({
-      url: "http://localhost:8080/task/get",
+      url: this.httpUrl + "/task/get",
       method: "post",
       params: {
         userid: this.userid,
@@ -232,23 +186,28 @@ export default {
   methods: {
     toBlog() {
       this.$router.push(
-        "/start/blog",
-        () => {},
-        () => {}
+          {path: "/start/blog", query: {userid: this.userid,httpUrl:this.httpUrl}},
+          () => {
+          },
+          () => {
+          }
       );
     },
     toList() {
       this.$router.push(
-        { path: "/start/todolist", query: { userid: this.userid } },
-        () => {},
-        () => {}
+          {path: "/start/todolist", query: {userid: this.userid,httpUrl:this.httpUrl}},
+          () => {
+          },
+          () => {
+          }
       );
     },
     SearchForUser() {
       axios({
-        url: "https://mock.presstime.cn/mock/62ef847099bc590021df133c/blog/users",
+        url: this.httpUrl + "/blog/users",
         method: "post",
         params: {
+          userid:this.userid,
           username: this.currentsearchinguser,
         },
       }).then((res) => {
@@ -257,7 +216,7 @@ export default {
         if (this.isFind) {
           alert("成功关注用户" + this.currentsearchinguser + "！");
           axios({
-            url: "https://mock.presstime.cn/mock/62ef847099bc590021df133c/blog/get",
+            url: this.httpUrl + "/blog/get",
             method: "post",
             params: {
               userid: this.userid,
@@ -278,15 +237,15 @@ export default {
     // 当前时间
     newTime() {
       return (
-        this.year +
-        "年" +
-        this.month +
-        "月" +
-        this.date +
-        "日 星期" +
-        this.day +
-        " " +
-        this.time
+          this.year +
+          "年" +
+          this.month +
+          "月" +
+          this.date +
+          "日 星期" +
+          this.day +
+          " " +
+          this.time
       );
     },
   },

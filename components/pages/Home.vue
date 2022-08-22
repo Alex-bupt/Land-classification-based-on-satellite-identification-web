@@ -80,7 +80,7 @@
             </div>
             <!-- 表单提交 -->
             <div class="login-footer" style="width: 100%;height: 50px;position: relative;">
-              <button type="submit" class="btn btn-primary m-auto login-btn" @click="register"
+              <button type="button" class="btn btn-primary m-auto login-btn" @click="register"
                       @keydown.enter="register">注册你的账号
               </button>
             </div>
@@ -122,7 +122,7 @@
             </div>
             <!-- 表单提交 -->
             <div class="login-footer" style="width: 100%;height: 50px;position: relative;">
-              <button type="submit" class="btn btn-primary m-auto login-btn" @click="login" @keydown.enter="login">
+              <button type="button" class="btn btn-primary m-auto login-btn" @click="login" @keydown.enter="login">
                 登录
               </button>
             </div>
@@ -135,7 +135,6 @@
 
 <script>
 import axios from "axios";
-import PubSub from 'pubsub-js'
 
 export default {
   name: "Home",
@@ -148,33 +147,34 @@ export default {
       passwordReg: '',
       readyLogin: false,
       readyReg: false,
-      email: ''
+      email: '',
+      httpUrl:'http://yaihpk.natappfree.cc'
     }
   },
   methods: {
     login() {
       axios({
-        url: 'http://localhost:8080/user/login',
+        url: this.httpUrl + '/user/login',
         method: 'post',
         params: {
           username: this.usernameLogin,
           password: this.passwordLogin
         }
       }).then(res => {
-        this.readyLogin = res.state
-        this.userid = res.data.userid
+        this.readyLogin = res.data.state
+        this.userid = res.data.data.userid
+        if (this.readyLogin) {
+          this.$router.push({path: "/start", query: {username: this.usernameLogin, userid: this.userid, httpUrl:this.httpUrl}}, () => {
+          }, () => {
+          })
+        } else {
+          window.alert("登陆失败，请检查用户名或密码")
+        }
       })
-      if (this.readyLogin || 1) {
-        this.$router.push({path: "/start", query: {username: this.usernameLogin, userid: this.userid}}, () => {
-        }, () => {
-        })
-      } else {
-        window.alert("登陆失败，请检查用户名或密码")
-      }
     },
     register() {
       axios({
-        url: 'http://localhost:8080/user/register',
+        url: this.httpUrl + '/user/register',
         method: 'post',
         params: {
           username: this.usernameReg,
@@ -182,14 +182,13 @@ export default {
           email: this.email
         }
       }).then(res => {
-        this.readyReg = res.state
+        this.readyReg = res.data.state
+        if (this.readyReg) {
+          window.alert("注册成功！")
+        } else {
+          window.alert("注册失败，用户名重复")
+        }
       })
-      if (this.readyReg) {
-        window.alert("注册成功！")
-      } else {
-        window.alert("注册失败，用户名重复")
-      }
-
     }
   }
 }
