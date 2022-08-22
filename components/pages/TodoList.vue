@@ -13,7 +13,7 @@
 
           <!-- 事务列表 -->
           <div id="accordion" class="mt-3">
-            <div class="card" v-for="task in tasks">
+            <div class="card" v-for="task in tasks" :key="task.id">
               <div class="card-header">
                 <input type="checkbox" class="form-check-input start-box" v-model="task.finish"/>
                 <a class="btn ms-2" data-bs-toggle="collapse" :href="['#task'+task.taskId]">
@@ -133,28 +133,32 @@ export default {
           sum++
         }
       })
-      for(let i = 0;i<sum;i++){
-        window.alert(i)
-        axios({
-          url: this.httpUrl + '/task/delete',
-          method: 'post',
-          params: {
-            userid: this.userid,
-            taskid: array[i]
-          }
-        }).then(res => {
-          this.tasks = res.data.data.tasks
-        })
+      // for(let i = 0;i<sum;i++){
+      //   window.alert(i)
+      //   axios({
+      //     url: this.httpUrl + '/task/delete',
+      //     method: 'post',
+      //     params: {
+      //       userid: this.userid,
+      //       taskid: array[i]
+      //     }
+      //   }).then(res => {
+      //     this.tasks = res.data.data.tasks
+      //   })
+      // }
+      let str = "userid=" + this.userid
+      for (let i = 0; i < sum; i++) {
+        str += "&taskid=" + array[i]
       }
-      // axios({
-      //   url: this.httpUrl + '/task/deleteall',
-      //   method: 'get',
-      //   params: {
-      //     userid: array
-      //   }
-      // }).then(res => {
-      //   this.tasks = res.data.data.tasks
-      // })
+      axios({
+        url: this.httpUrl + '/task/deleteall'+'?'+str,
+        method: 'get',
+        params: {
+          
+        }
+      }).then(res => {
+        this.tasks = res.data.data.tasks
+      })
     },
     addInfo(task) {
       axios({

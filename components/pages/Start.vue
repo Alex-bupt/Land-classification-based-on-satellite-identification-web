@@ -210,8 +210,8 @@ export default {
         url: this.httpUrl + "/blog/users",
         method: "post",
         params: {
-          userid:this.userid,
-          username: this.currentsearchinguser,
+          myuserid:this.userid,
+          searchingusername: this.currentsearchinguser,
         },
       }).then((res) => {
         this.isFind = res.data.state;
