@@ -2,15 +2,21 @@
   <div>
     <div class="blog-box">
       <div class="blog-content" v-for="blog in blogs" :key="blog.id">
-        <div class="blog-author">{{ blog["blog-author"] }}</div>
-        <div class="blog-time">{{ blog["blog-time"] }}</div>
-        <div class="blog-text" v-html="blog['blog-text']"></div>
+        <div class="blog-author">{{ blog["username"] }}</div>
+        <div class="blog-time">
+          {{ timestampToTime(blog["postTime"] * 1000) }}
+        </div>
+        <div class="blog-text" v-html="processContext(blog['context'])"></div>
       </div>
     </div>
 
     <div class="container fixed-bottom">
-      <button type="button" class="btn btn-primary col-md-4 offset-md-4" data-bs-toggle="modal"
-              data-bs-target="#blogModal">
+      <button
+        type="button"
+        class="btn btn-primary col-md-4 offset-md-4"
+        data-bs-toggle="modal"
+        data-bs-target="#blogModal"
+      >
         写点blog
       </button>
     </div>
@@ -20,22 +26,42 @@
           <!-- 模态框头部 -->
           <div class="modal-header">
             <h4 class="modal-title">发表blog</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
           </div>
 
           <!-- 模态框内容 -->
           <div class="modal-body">
             <label for="blog-content">请输入内容：</label>
-            <textarea class="form-control" rows="10" id="blog-content" name="text" placeholder="说些什么..."
-                      v-model="unfinishedblog"></textarea>
+            <textarea
+              class="form-control"
+              rows="10"
+              id="blog-content"
+              name="text"
+              placeholder="说些什么..."
+              v-model="unfinishedblog"
+              style="white-space: pre-wrap;"
+            ></textarea>
           </div>
 
           <!-- 模态框底部 -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
               关闭
             </button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="PublishBlog">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="PublishBlog"
+            >
               提交
             </button>
           </div>
@@ -56,12 +82,13 @@ export default {
       blogs: [],
       unfinishedblog: "",
       isPublishOK: false,
-      httpUrl:''
+      httpUrl: "",
     };
   },
   mounted() {
     this.httpUrl = this.$route.query.httpUrl;
     this.userid = this.$route.query.userid;
+    this.username = this.$route.query.username;
     axios({
       url: this.httpUrl + "/blog/get",
       method: "post",
@@ -70,38 +97,73 @@ export default {
       },
     }).then((res) => {
       this.blogs = res.data.data.blogs;
+      function sortBy(props) {
+        return function (a, b) {
+          return -(a[props] - b[props]);
+        };
+      }
+      this.blogs.sort(sortBy("postTime"));
     });
   },
   methods: {
     PublishBlog() {
-      //this.username = this.$route.query.username;
+      this.username = this.$route.query.username;
       this.userid = this.$route.query.userid;
       axios({
-        url: this.httpUrl + '/blog/add',
-        method: 'post',
+        url: this.httpUrl + "/blog/add",
+        method: "post",
         params: {
           userid: this.userid,
-          content: this.unfinishedblog
-        }
+          context: this.unfinishedblog,
+        },
       }).then((res) => {
         this.isPublishOK = res.data.state;
+        console.log(this.unfinishedblog);
         if (this.isPublishOK) {
           alert("Blog发表成功！");
           this.unfinishedblog = "";
           axios({
-            url: this.httpUrl + '/blog/get',
-            method: 'post',
+            url: this.httpUrl + "/blog/get",
+            method: "post",
             params: {
               userid: this.userid,
-            }
+            },
           }).then((res) => {
             this.blogs = res.data.data.blogs;
-          })
+            function sortBy(props) {
+              return function (a, b) {
+                return -(a[props] - b[props]);
+              };
+            }
+            this.blogs.sort(sortBy("postTime"));
+          });
           this.reload();
         } else {
           alert("Blog发表失败！");
         }
-      })
+      });
+    },
+    timestampToTime(timestamp) {
+      timestamp = timestamp ? timestamp : null;
+      let date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      let Y = date.getFullYear() + "-";
+      let M =
+        (date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) + "-";
+      let D =
+        (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
+      let h =
+        (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
+      let m =
+        (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+        ":";
+      let s =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
+    },
+    processContext(context) {
+      return context.replace(/\n/g, "<br>");
     },
   },
   inject: ["reload"],
@@ -158,7 +220,7 @@ export default {
   border-radius: 5px;
 }
 
-.blog-text>>>p {
+.blog-text >>> p {
   text-indent: 2em;
 }
 </style>

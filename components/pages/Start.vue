@@ -207,8 +207,8 @@ export default {
         url: this.httpUrl + "/blog/users",
         method: "post",
         params: {
-          userid:this.userid,
-          username: this.currentsearchinguser,
+          myuserid:this.userid,
+          searchingusername: this.currentsearchinguser,
         },
       }).then((res) => {
         this.isFind = res.data.state;
@@ -228,7 +228,7 @@ export default {
           });
           this.reload();
         } else {
-          alert("用户" + this.currentsearchinguser + "不存在，关注失败！");
+          alert("用户" + this.currentsearchinguser + "不存在或已经关注，关注失败！");
         }
       });
     },
