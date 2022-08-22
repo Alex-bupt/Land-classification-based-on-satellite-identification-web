@@ -148,7 +148,7 @@ export default {
       readyLogin: false,
       readyReg: false,
       email: '',
-      httpUrl:'http://yaihpk.natappfree.cc'
+      httpUrl:'http://sfsgd6.natappfree.cc'
     }
   },
   methods: {
