@@ -109,10 +109,13 @@ export default {
         }
       }).then(res => {
         this.tasks = res.data.data.tasks
+        this.$store.dispatch('updateUnfinished',res.data.data.unfinished)
+        this.$store.dispatch('updateFinished',res.data.data.finished)
+        this.$store.dispatch('updateAll',res.data.data.all)
+        this.$store.dispatch('updateIsExpire',res.data.data.isExpire)
       })
     },
     addItem() {
-      let vm = this
       let msg = this.$refs.add.value
       if (msg === '') {
       } else {
@@ -124,9 +127,12 @@ export default {
             task_name: msg
           }
         }).then(res => {
-          console.log(this)
           this.tasks = res.data.data.tasks
           this.$refs.add.value = ""
+          this.$store.dispatch('updateUnfinished',res.data.data.unfinished)
+          this.$store.dispatch('updateFinished',res.data.data.finished)
+          this.$store.dispatch('updateAll',res.data.data.all)
+          this.$store.dispatch('updateIsExpire',res.data.data.isExpire)
         })
       }
     },
@@ -139,7 +145,6 @@ export default {
           sum++
         }
       })
-      let vm = this
       let str = encodeURI(array)
       window.alert(str)
       axios({
@@ -151,6 +156,10 @@ export default {
         }
       }).then(res => {
         this.tasks = res.data.data.tasks
+        this.$store.dispatch('updateUnfinished',res.data.data.unfinished)
+        this.$store.dispatch('updateFinished',res.data.data.finished)
+        this.$store.dispatch('updateAll',res.data.data.all)
+        this.$store.dispatch('updateIsExpire',res.data.data.isExpire)
       })
       // for(let i = 0;i<sum;i++){
       //   window.alert(i)
@@ -167,7 +176,6 @@ export default {
       // }
     },
     addInfo(task) {
-      let vm = this
       axios({
         url: this.httpUrl + '/task/update',
         method: 'post',
