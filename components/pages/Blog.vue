@@ -1,12 +1,31 @@
 <template>
   <div>
     <div class="blog-box">
-      <div class="blog-content" v-for="blog in blogs" :key="blog.id">
+      <div
+        class="blog-content"
+        v-for="blog in this.blogs"
+        :key="blog['blogId']"
+      >
         <div class="blog-author">{{ blog["username"] }}</div>
         <div class="blog-time">
           {{ timestampToTime(blog["postTime"] * 1000) }}
         </div>
-        <div class="blog-text" v-html="processContext(blog['context'])"></div>
+        <div class="btn-group blog-manage" v-if="true">
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            data-bs-toggle="dropdown"
+          >
+            管理
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" @click="editBlogClicked(blog['context'])"
+              >编辑</a
+            >
+            <a class="dropdown-item" @click="deleteBlog(blog['blogId'])">删除</a>
+          </div>
+        </div>
+        <VueMarkdown :source="blog['context']" class="blog-text"></VueMarkdown>
       </div>
     </div>
 
@@ -36,15 +55,12 @@
           <!-- 模态框内容 -->
           <div class="modal-body">
             <label for="blog-content">请输入内容：</label>
-            <textarea
-              class="form-control"
-              rows="10"
-              id="blog-content"
-              name="text"
-              placeholder="说些什么..."
-              v-model="unfinishedblog"
-              style="white-space: pre-wrap;"
-            ></textarea>
+            <mavon-editor
+              :ishljs="true"
+              ref="md"
+              @imgAdd="$imgAdd"
+              @imgDel="$imgDel"
+            />
           </div>
 
           <!-- 模态框底部 -->
@@ -73,14 +89,18 @@
 
 <script>
 import axios from "axios";
+import VueMarkdown from "vue-markdown";
 export default {
+  components: {
+    VueMarkdown,
+  },
   name: "Blog",
   data() {
     return {
       username: "",
       userid: "",
       blogs: [],
-      unfinishedblog: "",
+      img_file: [],
       isPublishOK: false,
       httpUrl: "",
     };
@@ -114,29 +134,13 @@ export default {
         method: "post",
         params: {
           userid: this.userid,
-          context: this.unfinishedblog,
+          context: this.$refs.md.d_render,
         },
       }).then((res) => {
         this.isPublishOK = res.data.state;
-        console.log(this.unfinishedblog);
+        console.log(this.$refs.md.d_render);
         if (this.isPublishOK) {
           alert("Blog发表成功！");
-          this.unfinishedblog = "";
-          axios({
-            url: this.httpUrl + "/blog/get",
-            method: "post",
-            params: {
-              userid: this.userid,
-            },
-          }).then((res) => {
-            this.blogs = res.data.data.blogs;
-            function sortBy(props) {
-              return function (a, b) {
-                return -(a[props] - b[props]);
-              };
-            }
-            this.blogs.sort(sortBy("postTime"));
-          });
           this.reload();
         } else {
           alert("Blog发表失败！");
@@ -162,8 +166,45 @@ export default {
         date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
       return Y + M + D + h + m + s;
     },
-    processContext(context) {
-      return context.replace(/\n/g, "<br>");
+    deleteBlog(blogId) {
+      console.log(blogId);
+      axios({
+        url: this.httpUrl + "/blog/delete",
+        method: "post",
+        params: {
+          blogId: blogId,
+        },
+      }).then((res) => {
+        if (res.data.state) {
+          alert("删除成功！");
+          this.reload();
+        } else {
+          alert("删除失败！");
+        }
+      });
+    },
+    $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      var image = new FormData();
+      image.append("image", $file);
+      this.img_file[pos] = $file;
+      axios
+        .post(this.httpUrl + "/file/upload", image, {
+          "Content-type": "multipart/form-data",
+        })
+        .then((res) => {
+          let _res = res.data.data;
+          //第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+          console.log(this.$refs);
+          this.$refs.md.$img2Url(pos, _res["url"]);
+        });
+    },
+    $imgDel(pos) {
+      delete this.img_file[pos];
+      console.log("delete");
+    },
+    editBlogClicked(context) {
+      console.log(context);
     },
   },
   inject: ["reload"],
@@ -208,6 +249,12 @@ export default {
   font-size: 10px;
 }
 
+.blog-manage {
+  float: right;
+  margin-right: 30px;
+  margin-top: -20px;
+}
+
 .blog-text {
   display: block;
   float: left;
@@ -218,9 +265,5 @@ export default {
   margin-bottom: 30px;
   width: 660px;
   border-radius: 5px;
-}
-
-.blog-text >>> p {
-  text-indent: 2em;
 }
 </style>

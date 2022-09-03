@@ -148,7 +148,7 @@ export default {
       readyLogin: false,
       readyReg: false,
       email: '',
-      httpUrl:'http://ru8bem.natappfree.cc',
+      httpUrl:'http://localhost:8080',
     }
   },
   methods: {
