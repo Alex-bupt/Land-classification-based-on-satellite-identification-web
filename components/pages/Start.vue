@@ -55,7 +55,9 @@
           </div>
           <div class="start-sum">
             <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-secondary">List小助手<button class="btn btn-primary ms-2" @click="update">update</button></a>
+              <a href="#" class="list-group-item list-group-item-secondary d-flex
+                  justify-content-between
+                  align-items-center">List小助手<button class="btn btn-primary" @click="update">update</button></a>
               <a href="#" class="
                   list-group-item list-group-item-warning
                   d-flex
@@ -141,7 +143,7 @@ export default {
     this.username = sessionStorage.getItem("userName");
     this.userid = this.$route.query.userid;
     this.$router.push(
-        {path: "/start/blog", query: {userid: this.userid,httpUrl:this.httpUrl}},
+        {path: "/start/todolist", query: {userid: this.userid,httpUrl:this.httpUrl}},
         () => {
         },
         () => {
@@ -210,8 +212,8 @@ export default {
         url: this.httpUrl + "/blog/users",
         method: "post",
         params: {
-          myuserid:this.userid,
-          searchingusername: this.currentsearchinguser,
+          userid:this.userid,
+          username: this.currentsearchinguser,
         },
       }).then((res) => {
         this.isFind = res.data.state;
@@ -231,7 +233,7 @@ export default {
           });
           this.reload();
         } else {
-          alert("用户" + this.currentsearchinguser + "不存在或已经关注，操作失败！");
+          alert("用户" + this.currentsearchinguser + "不存在，关注失败！");
         }
       });
     },
@@ -269,7 +271,7 @@ body {
 .myself-box {
   position: fixed;
   /* float: left; */
-  top: 70px;
+  top: 60px;
   height: 250px;
   width: 300px;
   border-radius: 5px;
@@ -315,7 +317,7 @@ body {
 .start-content {
   position: fixed;
   float: left;
-  top: 328px;
+  top: 313px;
   height: 400px;
   width: 300px;
   border-radius: 5px;
