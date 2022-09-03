@@ -13,7 +13,7 @@
 
           <!-- 事务列表 -->
           <div id="accordion" class="mt-3">
-            <div class="card" v-for="task in tasks" :key="task.id">
+            <div class="card" v-for="task in tasks">
               <div class="card-header">
                 <input type="checkbox" class="form-check-input start-box" v-model="task.finish"/>
                 <a class="btn ms-2" data-bs-toggle="collapse" :href="['#task'+task.taskId]">
@@ -66,6 +66,10 @@
         </div>
       </div>
     </div>
+      <img class="start-img" src="../../assets/bgp.png">
+    <div class="start-help fixed-bottom">
+      <p style="line-height: 5px;text-align: center;color:orange;">tips:使用TodoList功能做你的备忘录，马上添加你的第一个事务吧！</p>
+    </div>
   </div>
 </template>
 
@@ -108,6 +112,7 @@ export default {
       })
     },
     addItem() {
+      let vm = this
       let msg = this.$refs.add.value
       if (msg === '') {
       } else {
@@ -119,6 +124,7 @@ export default {
             task_name: msg
           }
         }).then(res => {
+          console.log(this)
           this.tasks = res.data.data.tasks
           this.$refs.add.value = ""
         })
@@ -133,6 +139,19 @@ export default {
           sum++
         }
       })
+      let vm = this
+      let str = encodeURI(array)
+      window.alert(str)
+      axios({
+        url: this.httpUrl + '/task/deleteall',
+        method: 'get',
+        params: {
+          userid: this.userid,
+          taskid: str
+        }
+      }).then(res => {
+        this.tasks = res.data.data.tasks
+      })
       // for(let i = 0;i<sum;i++){
       //   window.alert(i)
       //   axios({
@@ -146,21 +165,9 @@ export default {
       //     this.tasks = res.data.data.tasks
       //   })
       // }
-      let str = "userid=" + this.userid
-      for (let i = 0; i < sum; i++) {
-        str += "&taskid=" + array[i]
-      }
-      axios({
-        url: this.httpUrl + '/task/deleteall'+'?'+str,
-        method: 'get',
-        params: {
-          
-        }
-      }).then(res => {
-        this.tasks = res.data.data.tasks
-      })
     },
     addInfo(task) {
+      let vm = this
       axios({
         url: this.httpUrl + '/task/update',
         method: 'post',
@@ -180,6 +187,13 @@ export default {
 </script>
 
 <style scoped>
+.start-img{
+  position: absolute;
+  left:50%;
+  top:40%;
+  z-index:-1;
+}
+
 .todo-footer {
   height: 40px;
   line-height: 40px;
@@ -190,6 +204,7 @@ export default {
 .todo-footer button {
   float: right;
   margin-top: 5px;
+  box-shadow: 0px 0px 3px red;
 }
 
 .todo-header input {
@@ -252,12 +267,26 @@ export default {
 }
 
 .start-todos {
-  float: right;
+  position: absolute;
+  top: 10%;
+  left: 30%;
   width: 900px;
   background-color: #FFF;
-  margin-top: 58px;
   padding: 35px;
-  z-index: 1;
+  z-index: 3;
+}
+
+.start-help{
+  position: absolute;
+  width: 600px;
+  height: 40px;
+  background-color: #FFF;
+  padding: 15px;
+  left: 39%;
+  bottom: 2%;
+  z-index: 3;
+  border-radius: 10px;
+  border: 3px solid black;
 }
 
 @media screen and (max-width: 1300px) {

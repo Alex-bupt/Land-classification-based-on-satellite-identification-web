@@ -148,7 +148,7 @@ export default {
       readyLogin: false,
       readyReg: false,
       email: '',
-      httpUrl:'http://localhost:8080',
+      httpUrl:'http://575nrs.natappfree.cc'
     }
   },
   methods: {
