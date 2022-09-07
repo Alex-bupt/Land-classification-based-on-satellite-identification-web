@@ -290,7 +290,7 @@ export default {
   height: 40px;
   background-color: #FFF;
   padding: 15px;
-  left: 39%;
+  left: 40%;
   bottom: 2%;
   z-index: 3;
   border-radius: 10px;
